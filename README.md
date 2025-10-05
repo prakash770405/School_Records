@@ -1,4 +1,4 @@
-# demomongo
+# School_Records
 
 A small Express + MongoDB demo app (server-rendered with EJS) for managing student records. This project demonstrates basic CRUD (Create, Read, Update, Delete) operations using Mongoose and a simple, responsive Bootstrap UI.
 
