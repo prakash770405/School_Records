@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>XYZ School</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity=""
+        crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity=""
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+
+<body class="bg-light text-dark">
+    <nav class="navbar navbar-expand-lg navbar-white bg-white border-bottom ">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="\"><i class="fa-solid fa-graduation-cap"></i> XYZ School</a>
+            <ul class="navbar-nav ms-auto">
+                <h5 class="m-0 position-absolute start-50 translate-middle-x text-muted"><i
+                        class="fa-solid fa-user-tie"></i> Welcome!!&nbsp; <%=lists.name%> 
+                </h5>
+                <a class="dropdown-item text-primary" href="/students/logout">
+                    <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
+                </a>
+            </ul>
+        </div>
+    </nav>
+    <header class="container py-4">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="mb-0">
+                <h3 class=" mb-0"> Contact details </h3>
+                <p class="text-muted  position-absolute start-50 translate-middle-x">Your information from XYZ School
+                </p>
+            </div>
+        </div>
+        <%- include('../includes/flashmsg') %>
+    </header>
+
+    <main class="container mb-5">
+        <section class="row row-cols-1 ">
+            <div class="col">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex align-items-start mb-1">
+                        <div
+                            class="me-3 avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h5 class="card-title mb-0">
+                                <%= lists.name %>
+                            </h5>
+                            <p class="text-muted small mb-0"><i class="fa-solid fa-school"></i>
+                                CLASS:<%=lists.stdclass %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item"><i class="fa-regular fa-envelope me-2"></i>
+                            <%= lists.email %>
+                                </a>
+                        </li>
+                        <li class="list-group-item"><i class="fa-solid fa-phone me-2"></i>
+                            <%= lists.phone %>
+                                </a>
+                        </li>
+                        <li class="list-group-item"><i class="fa-solid fa-location-dot me-2"></i>
+                            <%= lists.address %>
+                        </li>
+                        <li class="list-group-item"><i class="fa-solid fa-calendar-days me-2"></i>
+                            <%= lists.dates.toLocaleString('en-US', { weekday: 'long' , year: 'numeric' , day: 'numeric'
+                                ,month: 'long' , hour: 'numeric' , minute: '2-digit' }) %>
+                        </li>
+                        <li class="list-group-item"><i class="fa-solid fa-key me-2"></i>
+                            <% if (lists.passwords && lists.passwords.length> 0) { %>
+                                <%= lists.passwords[0].passwords %>
+                                    <% } else { %>
+                                        <span class="text-muted">(no password)</span>
+                                        <% } %>
+                        </li>
+                    </ul>
+                </div>
+                <a href="/student/<%= lists._id %>/edit" class="btn btn-sm btn-outline-primary flex-grow-1"><i
+                        class="fa-solid fa-pen-to-square me-1"></i> Edit/Update password </a>
+            </div>
+        </section>
+    </main>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity=""
+        crossorigin="anonymous"></script>
+    <%- include('../includes/footer') %>
+</body>
+
+</html>
