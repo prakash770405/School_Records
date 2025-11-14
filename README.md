@@ -51,8 +51,10 @@ Dependencies from package.json:
 
 ## Project structure (important files)
 
-- `index.js` - main server file, route definitions and DB connection
-- `models/admin.js` - Mongoose schema for Admin users (using `passport-local-mongoose`).
+- `index.js` - Main server file: starts the server, connects to the database, and mounts the routers.
+- `routes/admin.js` - Contains all route handlers for administrator actions.
+- `routes/student.js` - Contains all route handlers for student actions.
+- `models/admindatabase.js` - Mongoose schema for Admin users (using `passport-local-mongoose`).
 - `models/student.js` - Mongoose schema for Student login credentials.
 - `models/chat.js` - Mongoose schema for the main student record, linking to the student's password.
 - `views/` - EJS templates
@@ -68,7 +70,7 @@ Dependencies from package.json:
 ## Data model
 
 The application uses three interconnected Mongoose models:
-1.  **Admin (`models/admin.js`)**: Stores admin `username` and hashed `password` via `passport-local-mongoose`.
+1.  **Admin (`models/admindatabase.js`)**: Stores admin `username` and hashed `password` via `passport-local-mongoose`.
 2.  **Student (`models/student.js`)**: Stores a student's `name` and `passwords` for login.
 3.  **Demo (`models/chat.js`)**: The main student record, containing personal details and a reference to the corresponding `Student` document for authentication.
     - `name` (String)
@@ -92,7 +94,7 @@ The application uses three interconnected Mongoose models:
 
 ### Student Routes
 - `GET /student`, `POST /student` — Student login.
-- `GET /students/logout` — Student logout.
+- `GET /student/logout` — Student logout.
 - `GET /student/:id` — View personal student dashboard.
 - `GET /student/:id/edit`, `PUT /student/:id/edit` — Edit personal student profile.
 
