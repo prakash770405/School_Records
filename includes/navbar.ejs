@@ -1,37 +1,28 @@
-<nav class="navbar navbar-expand-lg navbar-white bg-white border-bottom sticky-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="/"><i class="fa-solid fa-graduation-cap"></i> XYZ School</a>
-
-        <div class="collapse navbar-collapse" id="navMenu">
-            <h5 class="m-0 position-absolute start-50 translate-middle-x text-muted"><i
-                    class="fa-solid fa-user-tie"></i> Welcome!!&nbsp; <%=admin%>
-            </h5>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item ">
-                    <a class="nav-link text-muted" href="/data/new">&nbsp;&nbsp;<i class="fa-solid fa-user-plus"></i>
-                        Add Student &nbsp;</a>
-                </li>
-            </ul>
-        </div>
-
-        <ul class="navbar-nav ms-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link  text-primary" href="#" id="acctDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-bars"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="acctDropdown">
-                    <li>
-                        <a class="dropdown-item text-danger" href="/logout" onclick="return confirm('Are You Sure? You Want to Logout From <%=admin%>?');">
-                            <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
-                        </a>
+    <nav class="navbar navbar-expand-md navbar-white bg-white border-bottom">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/"><i class="fa-solid fa-graduation-cap"></i> XYZ School</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <div class="navbar-text mx-auto d-none d-md-block text-muted">
+                    <i class="fa-solid fa-user-shield"></i> Admin Dashboard
+                </div>
+                <ul class="navbar-nav ">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/data/new"><i class="fa-solid fa-user-plus me-1"></i> Add Student</a>
                     </li>
-                    <li>
-                        <a class="dropdown-item text-danger" href="/del" onclick="return confirm('Delete <%=admin%> account? This cannot be undone.');">
-                            <i class="fa-solid fa-trash me-2"></i> Delete account
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-user-gear me-1"></i> <%= admin %>
                         </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
+                            <li><a class="dropdown-item" href="/logout"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="/del"><i class="fa-solid fa-user-xmark me-2"></i>Delete My Account</a></li>
+                        </ul>
                     </li>
                 </ul>
-            </li>
-        </ul>
-    </div>
-</nav>
+            </div>
+        </div>
+    </nav>
