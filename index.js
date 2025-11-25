@@ -1,3 +1,8 @@
+if(process.env.NODE_ENV !="production"){
+require('dotenv').config()
+}
+
+
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -11,7 +16,8 @@ const flash = require('connect-flash'); //ye ek alert type ka message hota hai j
 const User = require('./models/admindatabase.js');//database for  admin accounts
 const adminRoutes = require('./admin.js');
 const studentRoutes = require('./student.js');
-const dbUrl='mongodb+srv://prakash:hUOeJluq61t0ISOC@cluster0.jzqnfyw.mongodb.net/?appName=Cluster0';
+const dbUrl=process.env.MONGO_URL;
+const cookieCode=process.env.COOKIE;
 const passport = require('passport');
 const localStrategy = require('passport-local');
 
@@ -26,8 +32,7 @@ const store = MongoStore.create({
 });
 
 
-
-app.use(session({ store:store,secret: "mysupersecretstring", resave: false, saveUninitialized: false }))
+app.use(session({ store:store,secret: cookieCode, resave: false, saveUninitialized: false }))
 app.use(flash());//humesha session create karne k baad flash ko use kare 
 
 app.use(passport.initialize());
