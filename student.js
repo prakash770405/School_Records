@@ -72,8 +72,11 @@ router.put("/:id/edit", ensureStudentOwner, async (req, res) => {
 });
 
 // Student Logout
-router.get('/logout', (req, res) => {
-    req.session.destroy(() => {
+router.get('/logout', (req, res, next) => {
+    // Regenerate the session to ensure a clean state after logout.
+    req.session.regenerate(function(err) {
+        if (err) return next(err);
+        req.flash('success', 'You have been logged out.');
         res.redirect('/student');
     });
 });

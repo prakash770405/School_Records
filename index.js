@@ -4,29 +4,36 @@ const mongoose = require('mongoose');
 const methodOverride = require("method-override");
 const path = require("path");
 const session = require('express-session'); //beena session k hum flash ko use nahi kar sakte 
+const MongoStore = require('connect-mongo');
+
 const flash = require('connect-flash'); //ye ek alert type ka message hota hai jo ki sirf ek bar dikhta hai by using session
 
 const User = require('./models/admindatabase.js');//database for  admin accounts
 const adminRoutes = require('./admin.js');
 const studentRoutes = require('./student.js');
-
+const dbUrl='mongodb+srv://prakash:hUOeJluq61t0ISOC@cluster0.jzqnfyw.mongodb.net/?appName=Cluster0';
 const passport = require('passport');
 const localStrategy = require('passport-local');
 
+// Note: avoid enabling connect-mongo's built-in crypto here unless you
+// have a working kruptein configuration. Passing `crypto` without a
+// compatible implementation can lead to runtime errors when sessions
+// are encrypted/decrypted (see connect-mongo internals). Leave crypto
+// out for now and rely on the session secret below.
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  touchAfter: 24 * 3600,
+});
 
-app.use(session({ secret: "mysupersecretstring", resave: false, saveUninitialized: true }))
+
+
+app.use(session({ store:store,secret: "mysupersecretstring", resave: false, saveUninitialized: false }))
 app.use(flash());//humesha session create karne k baad flash ko use kare 
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Prevent pages from being cached by the browser so the back button won't show protected data after logout
-app.use((req, res, next) => {
-  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-  res.set('Pragma', 'no-cache');
-  res.set('Expires', '0');
-  next();
-});
+
 
 passport.use(new localStrategy(User.authenticate()));
 
@@ -43,9 +50,15 @@ main()
   .then((result) => { console.log("database connected"); })
   .catch(err => console.log(err));
 
+// async function main() {
+//   await mongoose.connect('mongodb://127.0.0.1:27017/mydemo');
+// }
+
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/mydemo');
+  await mongoose.connect(dbUrl);
 }
+
+
 
 app.listen(8080, (req, res) => {
   console.log(`app is listening on port http://localhost:8080`);

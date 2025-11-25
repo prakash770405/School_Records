@@ -33,7 +33,7 @@ router.get("/signup", (req, res) => {
     res.render("signup.ejs");
 });
 
-router.post("/signup", async (req, res) => {
+router.post("/signup", async (req, res, next) => {
     try {
         const count = await User.countDocuments();
         if (count < 2) {
@@ -61,27 +61,53 @@ router.get("/login", (req, res) => {
     res.render("login.ejs");
 });
 
-router.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), (req, res) => {
-    req.flash("success", "Welcome back, Admin!");
-    res.redirect("/");
+router.post('/login', (req, res, next) => {
+    // We need to save the user's credentials before regenerating the session,
+    // as regeneration will clear the req.body.
+    const user = {
+        username: req.body.username,
+        password: req.body.password
+    };
+
+    req.session.regenerate(function (err) {
+        if (err) return next(err);
+
+        // Put the credentials back onto the request body for Passport to use.
+        req.body = user;
+
+        passport.authenticate('local', (err, user, info) => {
+            if (err) { return next(err); }
+            if (!user) {
+                req.flash('error', info.message || 'Invalid username or password.');
+                return res.redirect('/login');
+            }
+            req.logIn(user, function(err) {
+                if (err) { return next(err); }
+                req.flash("success", "Welcome back, Admin!");
+                return res.redirect('/');
+            });
+        })(req, res, next);
+    });
 });
 
 // Admin Logout
 router.get("/logout", (req, res, next) => {
-    req.logout(function (err) {
+    req.logout((err) => {
         if (err) { return next(err); }
-        req.session.destroy(() => {
-            res.redirect('/login');
-        });
+        req.flash("success", "You have been logged out.");
+        res.redirect('/login');
     });
 });
 
 // Delete Admin Account
-router.get("/del", isAdmin, async (req, res) => {
-    let adminname = req.user.username;
-    await User.findOneAndDelete({ username: adminname });
-    req.flash("error", "Admin account deleted. Please sign up again if needed.");
-    res.redirect("/login");
+router.get("/del", isAdmin, async (req, res, next) => { // Added next
+    const adminname = req.user.username;
+    req.logout(async (err) => {
+        if (err) { return next(err); }
+        await User.findOneAndDelete({ username: adminname });
+        req.flash("error", "Admin account deleted. Please sign up again if needed.");
+        res.redirect("/login");
+    });
 });
 
 // Add New Student
